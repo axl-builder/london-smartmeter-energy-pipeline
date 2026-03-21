@@ -1,0 +1,69 @@
+# ==============================================================================
+# PROYECTO: Pipeline de Energía (Smart Meters London)
+# ==============================================================================
+
+# --- SEGURIDAD Y CREDENCIALES (¡LO MÁS IMPORTANTE!) ---
+# No queremos que tus llaves de Kaggle o GCP terminen en manos ajenas
+.kaggle/
+kaggle.json
+*.json
+!credentials_example.json
+auth/
+secrets/
+.env
+*.pem
+*.key
+
+# --- DATOS Y ALMACENAMIENTO (ACAPARADORES DE ESPACIO) ---
+# No subimos los 1.17GB de CSVs. El reclutador los bajará con tu script.
+data/
+*.csv
+*.zip
+*.gz
+*.parquet
+*.sql
+# Si usas SQLite local para pruebas:
+*.sqlite
+*.db
+
+# --- INFRAESTRUCTURA (TERRAFORM) ---
+# No queremos subir el "estado" de tu infraestructura local
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+override.tf
+override.tf.json
+
+# --- ENTORNO VIRTUAL Y DEPENDENCIAS (PYTHON) ---
+# Usamos 'uv' o 'pip', pero el entorno (.venv) se crea en cada máquina
+.venv/
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+
+# --- ORQUESTACIÓN Y HERRAMIENTAS (KESTRA / DLT) ---
+.kestra/
+.dlt/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- NOTEBOOKS Y ANÁLISIS ---
+# Ignoramos los puntos de control de Jupyter
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# --- SISTEMA OPERATIVO Y LOGS ---
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp
