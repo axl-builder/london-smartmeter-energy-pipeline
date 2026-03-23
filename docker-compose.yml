@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  # El Pañol de Datos: Donde Kestra anota qué hizo y qué le falta hacer
+  postgres:
+    image: postgres:15
+    container_name: kestra_db
+    volumes:
+      - ./kestra/postgres_data:/var/lib/postgresql/data # Para tus flows
+    environment:
+      POSTGRES_USER: kestra
+      POSTGRES_PASSWORD: kestra_password
+      POSTGRES_DB: kestra
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0' # Le damos 1 hilo entero para que no se trabe al guardar logs
+          memory: 1G
+
+  # El Cerebro: El orquestador que va a mandar a dlt y dbt
+  kestra:
+    image: kestra/kestra:latest-full
+    container_name: kestra_server
+    command: server local
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./kestra/flows:/app/flows
+      - ./data:/app/datasets                 # CAMBIO CLAVE: Apuntamos a /datasets, no a /data
+      - ./gcp_key.json:/app/gcp_key.json
+      - ./research:/app/research
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /app/gcp_key.json
+      KESTRA_CONFIGURATION: |
+        kestra:
+          repository:
+            type: postgres
+          queue:
+            type: postgres
+          storage:
+            type: local
+            local:
+              base-path: /app/storage
+          datasources:
+            postgres:
+              url: jdbc:postgresql://postgres:5432/kestra
+              username: kestra
+              password: kestra_password
+              driverClassName: org.postgresql.Driver
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 4G
