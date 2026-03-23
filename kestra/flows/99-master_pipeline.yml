@@ -1,0 +1,44 @@
+id: london_energy_master_pipeline
+namespace: company.team
+description: "Pipeline End-to-End: Ingesta Kaggle -> GCS -> Tablas Externas/dlt -> dbt"
+
+tasks:
+  # ---------------------------------------------------------
+  # PASO 1: Descarga de Kaggle y subida a GCS
+  # ---------------------------------------------------------
+  - id: run_ingestion
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: company.team
+    flowId: london_energy_end_to_end_ingestion
+    wait: true # Espera a que termine para seguir
+    transmitFailed: true # Si falla, aborta el Flow Maestro
+
+  # ---------------------------------------------------------
+  # PASO 2: Creación de Tablas Externas en BigQuery
+  # ---------------------------------------------------------
+  - id: run_external_tables
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: company.team
+    flowId: london_energy_warehouse_external_tables
+    wait: true
+    transmitFailed: true
+
+  # ---------------------------------------------------------
+  # PASO 3: Carga de Dimensiones con dlt
+  # ---------------------------------------------------------
+  - id: run_dlt_dimensions
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: company.team
+    flowId: london_energy_warehouse_dlt_dimensions # (Ajustá el ID si le pusiste otro nombre)
+    wait: true
+    transmitFailed: true
+
+  # ---------------------------------------------------------
+  # PASO 4: Transformación con dbt (Staging & Prod)
+  # ---------------------------------------------------------
+  - id: run_dbt
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: company.team
+    flowId: london_energy_dbt_transform
+    wait: true
+    transmitFailed: true

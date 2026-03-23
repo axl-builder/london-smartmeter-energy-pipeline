@@ -12,7 +12,8 @@ tasks:
     commands:
       # 1. Clonar tu repositorio fresco desde la nube (REEMPLAZAR URL)
       - echo "📥 Descargando planos desde GitHub..."
-      - git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git /tmp/repo
+      - rm -rf /tmp/repo  # <-- EL ESCUDO SENIOR 
+      - git clone https://github.com/axl-builder/london-smartmeter-energy-pipeline.git /tmp/repo
       
       # 2. Movernos a la carpeta de dbt
       - cd /tmp/repo/london_energy_dbt
@@ -28,7 +29,7 @@ tasks:
             dev:
               type: bigquery
               method: service-account
-              project: TU_PROJECT_ID # REEMPLAZAR CON TU ID
+              project: smart-meters-london # REEMPLAZAR CON TU ID
               dataset: stg_london_energy
               threads: 4
               keyfile: /app/gcp_key.json
