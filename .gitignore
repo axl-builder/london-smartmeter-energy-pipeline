@@ -21,7 +21,7 @@ data/
 *.zip
 *.gz
 *.parquet
-*.sql
+
 # Si usas SQLite local para pruebas:
 *.sqlite
 *.db
