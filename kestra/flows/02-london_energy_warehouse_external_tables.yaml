@@ -1,0 +1,31 @@
+id: london_energy_warehouse_external_tables
+namespace: company.team
+
+tasks:
+  # ---------------------------------------------------------
+  # 1. TABLA EXTERNA: CONSUMO DIARIO (Daily Dataset)
+  # ---------------------------------------------------------
+  - id: create_daily_external_table
+    type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: "smart-meters-london"
+    sql: |
+      CREATE OR REPLACE EXTERNAL TABLE `smart-meters-london.raw_london_energy.daily_consumption_ext`
+      OPTIONS (
+        format = 'CSV',
+        uris = ['gs://london_energy_datalake_smart-meters-london/daily_dataset/daily_dataset/*.csv'],
+        skip_leading_rows = 1
+      );
+
+  # ---------------------------------------------------------
+  # 2. TABLA EXTERNA: CONSUMO MEDIA HORA (Half-Hourly Dataset)
+  # ---------------------------------------------------------
+  - id: create_hh_external_table
+    type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: "smart-meters-london"
+    sql: |
+      CREATE OR REPLACE EXTERNAL TABLE `smart-meters-london.raw_london_energy.hh_consumption_ext`
+      OPTIONS (
+        format = 'CSV',
+        uris = ['gs://london_energy_datalake_smart-meters-london/hhblock_dataset/hhblock_dataset/*.csv'],
+        skip_leading_rows = 1
+      );

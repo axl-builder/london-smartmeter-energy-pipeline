@@ -1,0 +1,67 @@
+id: london_energy_warehouse_dlt_dimensions
+namespace: company.team
+
+tasks:
+  - id: load_dimensions_with_dlt
+    type: io.kestra.plugin.scripts.python.Script
+    runner: PROCESS
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /app/gcp_key.json
+    beforeCommands:
+      # Instalamos dlt con el conector específico para BigQuery y pandas
+      - pip install dlt[bigquery] pandas --quiet
+    script: |
+      import dlt
+      import pandas as pd
+      import os
+
+      # CONFIGURACIÓN DE OBRA
+      PROJECT_ID = "smart-meters-london" # Reemplazá con tu ID de GCP
+      DATASET_NAME = "raw_london_energy"
+      BASE_DIR = "/app/datasets"
+      
+      # Los archivos "pequeños" que vamos a cargar nativamente
+      dim_files = [
+          "weather_daily_darksky.csv",
+          "weather_hourly_darksky.csv",
+          "uk_bank_holidays.csv",
+          "informations_households.csv",
+          "acorn_details.csv"
+      ]
+
+      print("🚀 Iniciando el camión de dlt para Tablas de Dimensión...")
+
+      # 1. Inicializamos el pipeline de dlt
+      pipeline = dlt.pipeline(
+          pipeline_name='london_dimensions_pipeline',
+          destination='bigquery',
+          dataset_name=DATASET_NAME
+      )
+
+      # 2. Iteramos y cargamos cada archivo
+      for file in dim_files:
+          file_path = os.path.join(BASE_DIR, file)
+          
+          if os.path.exists(file_path):
+              print(f"📥 Procesando: {file}...")
+              
+              # Leemos el archivo con pandas usando codificación flexible
+              try:
+                  df = pd.read_csv(file_path, encoding='utf-8')
+              except UnicodeDecodeError:
+                  print(f"⚠️ Detectada codificación europea en {file}. Cambiando lentes a latin1...")
+                  df = pd.read_csv(file_path, encoding='latin1')
+              
+              # El nombre de la tabla será el nombre del archivo sin el .csv
+              table_name = file.replace('.csv', '')
+              
+              # Magia dlt: insertamos los datos reemplazando si ya existen (idempotencia)
+              load_info = pipeline.run(df, table_name=table_name, write_disposition="replace")
+              
+              print(f"✅ {table_name} cargada con éxito en BigQuery.")
+              print(load_info)
+              print("-" * 40)
+          else:
+              print(f"⚠️ ARCHIVO FALTANTE: No se encontró {file} en {BASE_DIR}")
+
+      print("🎉 Carga de dimensiones finalizada.")
