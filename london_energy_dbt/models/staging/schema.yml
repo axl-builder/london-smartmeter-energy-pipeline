@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_daily_consumption
+    description: "Capa Staging: Datos limpios de consumo diario de energía por hogar en Londres."
+    columns:
+      - name: household_id
+        description: "ID único del medidor de la casa."
+        tests:
+          - not_null
+
+      - name: consumption_date
+        description: "Fecha en la que se registró el consumo."
+        tests:
+          - not_null
+
+      - name: energy_sum
+        description: "Suma total de energía consumida en el día (kWh)."
+        tests:
+          - not_null

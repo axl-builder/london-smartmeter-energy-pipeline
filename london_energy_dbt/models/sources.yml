@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw_london_energy  # El nombre de tu dataset crudo
+    database: smart-meters-london # Tu Project ID de GCP
+    tables:
+      # Las tablas externas que armamos con Kestra
+      - name: daily_consumption_ext
+      - name: hh_consumption_ext
+      # Una de las dimensiones que armó dlt
+      - name: weather_daily_darksky
+      - name: uk_bank_holidays
