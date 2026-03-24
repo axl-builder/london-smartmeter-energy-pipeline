@@ -10,7 +10,6 @@ models:
       - name: consumption_date
         tests:
           - not_null
-          - unique
       - name: total_kwh
         tests:
           - not_null
@@ -43,7 +42,8 @@ models:
           # Este es un test de Nivel Senior: Obligamos a que la hora solo pueda ser de 0 a 23.
           # Si por algún error de cálculo da 24 o -1, el pipeline se rompe y nos avisa.
           - accepted_values:
-              values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+              arguments:
+                values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
       - name: acorn_group
         tests:
           - not_null

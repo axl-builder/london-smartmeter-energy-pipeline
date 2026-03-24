@@ -15,8 +15,8 @@ with daily_consumption as (
 
 households as (
     select 
-        LCLid as household_id, 
-        Acorn_grouped as acorn_group 
+        lc_lid as household_id, 
+        acorn_grouped as acorn_group 
     from {{ source('raw_london_energy', 'informations_households') }}
 ),
 
