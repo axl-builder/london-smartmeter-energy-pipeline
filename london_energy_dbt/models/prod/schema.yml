@@ -31,7 +31,7 @@ models:
           - not_null
 
   # --------------------------------------------------
-  # 3. TESTEANDO EL PERFIL HORARIO (EL MÁS ESTRICTO)
+  # 3. TESTEANDO EL PERFIL HORARIO
   # --------------------------------------------------
   - name: mart_hourly_profile
     description: "Tabla de Producción: Curva de consumo promedio por hora del día y grupo ACORN."
@@ -40,8 +40,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              data_type: int64   # <-- EL ARREGLO MÁGICO (forzamos que sepa que son números)
               arguments:
+                quote: false  # <-- EL ARREGLO REAL: Evita que dbt lo transforme en texto
                 values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
       - name: acorn_group
         tests:
