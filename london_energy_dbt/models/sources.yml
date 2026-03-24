@@ -10,3 +10,5 @@ sources:
       # Una de las dimensiones que armó dlt
       - name: weather_daily_darksky
       - name: uk_bank_holidays
+      - name: informations_households
+      - name: hh_consumption_ext
