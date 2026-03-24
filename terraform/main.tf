@@ -3,7 +3,7 @@ terraform {
   backend "local" {} # Podés cambiarlo a "gcs" más adelante si querés guardar el estado en la nube
   required_providers {
     google = {
-      source  = "hashicorp/google"
+      source = "hashicorp/google"
     }
   }
 }

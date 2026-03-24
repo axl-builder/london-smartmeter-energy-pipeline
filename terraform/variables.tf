@@ -1,11 +1,11 @@
 variable "project" {
   description = "Tu ID de Proyecto de GCP"
-  default     = "smart-meters-london" 
+  default     = "smart-meters-london"
 }
 
 variable "region" {
   description = "Región de los recursos"
-  default     = "us-central1" 
+  default     = "us-central1"
 }
 
 variable "location" {
