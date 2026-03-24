@@ -37,7 +37,12 @@ hourly_sums as (
 households as (
     select 
         lc_lid as household_id, 
-        acorn_grouped as acorn_group 
+        -- Limpiamos la basura de Kaggle:
+        CASE 
+            WHEN acorn_grouped IN ('ACORN-U', 'ACORN-') THEN 'Unknown'
+            WHEN acorn_grouped IS NULL THEN 'Unknown'
+            ELSE acorn_grouped 
+        END as acorn_group 
     from {{ source('raw_london_energy', 'informations_households') }}
 ),
 
