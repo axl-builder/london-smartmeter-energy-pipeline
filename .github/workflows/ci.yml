@@ -13,20 +13,6 @@
       - name: Install dbt-bigquery
         run: pip install dbt-bigquery==1.11.1
 
-      - name: Create dummy dbt profile
-        run: |
-          mkdir -p ~/.dbt
-          cat <<EOF > ~/.dbt/profiles.yml
-          london_energy_dbt:
-            target: dev
-            outputs:
-              dev:
-                type: bigquery
-                method: oauth
-                project: dummy-project
-                dataset: dummy_dataset
-          EOF
-
       - name: Check dbt syntax
         run: |
           cd london_energy_dbt
