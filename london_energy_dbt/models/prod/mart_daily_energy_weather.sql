@@ -1,6 +1,12 @@
 {{ config(
     materialized='table',
-    schema='prod_london_energy'
+    schema='prod_london_energy',
+    partition_by={
+      "field": "consumption_date",
+      "data_type": "date",
+      "granularity": "day"
+    },
+    cluster_by=["household_id", "is_holiday"] 
 ) }}
 
 with daily_energy as (
@@ -37,7 +43,7 @@ final_mart as (
 
     from daily_energy e
     -- Hacemos LEFT JOIN para no perder días de consumo si falta el clima
-    left join daily_weather w 
+    inner join daily_weather w 
         on e.consumption_date = w.weather_date
     left join holidays h 
         on e.consumption_date = h.holiday_date

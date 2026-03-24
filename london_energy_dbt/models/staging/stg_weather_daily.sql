@@ -17,6 +17,7 @@ casted as (
 
     from raw_weather
     where time is not null
+        and temperature_max is not null -- Filtramos los días sin registro de temperatura
 )
 
 select * from casted

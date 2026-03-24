@@ -18,3 +18,13 @@ models:
         description: "Suma total de energía consumida en el día (kWh)."
         tests:
           - not_null
+          
+  - name: stg_weather_daily
+    description: "Capa Staging: Clima diario de Londres (DarkSky)."
+    columns:
+      - name: weather_date
+        tests:
+          - not_null
+      - name: max_temp_celsius # Ponemos el control de calidad en la temperatura
+        tests:
+          - not_null
