@@ -1,4 +1,40 @@
-# 📊 TRABAJO 2: REVISAR DBT
+name: CI Pipeline (Terraform & dbt)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # 🏗️ TRABAJO 1: REVISAR TERRAFORM
+  terraform-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init -backend=false
+
+      - name: Terraform Validate
+        run: |
+          cd terraform
+          terraform validate
+
+      - name: Terraform Format Check
+        run: |
+          cd terraform
+          terraform fmt -check
+
+  # 📊 TRABAJO 2: REVISAR DBT
   dbt-check:
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +53,6 @@
         run: |
           cd london_energy_dbt
           
-          # Creamos el perfil falso en la misma carpeta del proyecto
           cat <<EOF > profiles.yml
           london_energy_dbt:
             target: dev
@@ -29,6 +64,5 @@
                 dataset: dummy_dataset
           EOF
           
-          # Le decimos a dbt expresamente que busque el perfil en la carpeta actual (.)
           dbt deps --profiles-dir .
           dbt parse --profiles-dir .
