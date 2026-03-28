@@ -127,7 +127,7 @@ This is where the computational heavy lifting happens. Models are materialized a
 The presentation layer is an interactive dashboard built on **Looker Studio**, connected directly to the partitioned BigQuery marts (`mart_daily_energy_weather` and `mart_hourly_profile`). The dashboard uses a dark theme designed for analytical clarity.
 
 <p align="center">
-  <img src="assets/dashboard_img.png" alt="Dashboard" width="90%">
+  <img src="assets/dashboard_img.JPG" alt="Dashboard" width="90%">
 </p>
 
 ### Key Analytical Tiles
