@@ -53,7 +53,6 @@ Key architectural achievements:
 
 ### Pipeline Architecture
 
-> Replace this placeholder with your architecture diagram.
 > `![Architecture Diagram](link_to_your_diagram_image.png)`
 
 The pipeline follows a modern ELT approach, orchestrated end-to-end:
@@ -127,9 +126,9 @@ This is where the computational heavy lifting happens. Models are materialized a
 
 The presentation layer is an interactive dashboard built on **Looker Studio**, connected directly to the partitioned BigQuery marts (`mart_daily_energy_weather` and `mart_hourly_profile`). The dashboard uses a dark theme designed for analytical clarity.
 
-> Note: the four gauge scorecards at the top are currently under development. The main analytical tiles below are fully functional.
-
-![Smart Meters London Dashboard](https://raw.githubusercontent.com/user_name/repo_name/main/image_0.png)
+<p align="center">
+  <img src="assets/dashboard_img.png" alt="Dashboard" width="90%">
+</p>
 
 ### Key Analytical Tiles
 
