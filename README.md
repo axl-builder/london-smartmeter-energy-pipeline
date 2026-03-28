@@ -55,10 +55,10 @@ Key architectural achievements:
 
 ## 2. Architecture & Tech Stack
 
-### Pipeline Architecture
+### ELT Pipeline Architecture
 
 <p align="center">
-  <img src="assets/pipeline-arch.png" alt="ELT Pipeline Architecture" width="90%">
+  <img src="assets/pipeline-archB.png" alt="ELT Pipeline Architecture" width="90%">
 </p>
 
 The pipeline follows a modern ELT approach, orchestrated end-to-end:
