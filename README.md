@@ -57,7 +57,9 @@ Key architectural achievements:
 
 ### Pipeline Architecture
 
-> `![Architecture Diagram](link_to_your_diagram_image.png)`
+<p align="center">
+  <img src="assets/pipeline-arch.png" alt="ELT Pipeline Architecture" width="90%">
+</p>
 
 The pipeline follows a modern ELT approach, orchestrated end-to-end:
 

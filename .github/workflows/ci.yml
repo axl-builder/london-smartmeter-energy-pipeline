@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # 🏗️ TRABAJO 1: REVISAR TERRAFORM
+  # 🏗️ JOB 1: REVISAR TERRAFORM
   terraform-check:
     runs-on: ubuntu-latest
     steps:
