@@ -8,6 +8,10 @@ Capstone project for the [Data Engineering Zoomcamp 2026](https://datatalks.club
   <img src="assets/dashboard_demo.gif" alt="Smart Meters London — Dashboard Demo" width="90%">
 </p>
 
+<p align="center">
+  <a href="https://lookerstudio.google.com/reporting/38352e4f-93f9-4621-ab99-8f8fcf6530e3">View live dashboard</a>
+</p>
+
 > Interactive Looker Studio dashboard built on optimized BigQuery marts. See [Section 5](#5-dashboard--insights) for a full breakdown of each analytical tile.
 
 ---
@@ -124,7 +128,7 @@ This is where the computational heavy lifting happens. Models are materialized a
 
 ## 5. Dashboard & Insights
 
-The presentation layer is an interactive dashboard built on **Looker Studio**, connected directly to the partitioned BigQuery marts (`mart_daily_energy_weather` and `mart_hourly_profile`). The dashboard uses a dark theme designed for analytical clarity.
+The presentation layer is an interactive dashboard built on **Looker Studio**, connected directly to the partitioned BigQuery marts. [Open the live dashboard](https://lookerstudio.google.com/reporting/38352e4f-93f9-4621-ab99-8f8fcf6530e3).
 
 <p align="center">
   <img src="assets/dashboard_img.JPG" alt="Dashboard" width="90%">
