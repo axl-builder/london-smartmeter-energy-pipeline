@@ -16,7 +16,7 @@ with daily_consumption as (
 households as (
     select 
         lc_lid as household_id, 
-        -- Limpiamos la basura de Kaggle:
+        -- Cleaning up Kaggle's messy data:
         CASE 
             WHEN acorn_grouped IN ('ACORN-U', 'ACORN-') THEN 'Unknown'
             WHEN acorn_grouped IS NULL THEN 'Unknown'

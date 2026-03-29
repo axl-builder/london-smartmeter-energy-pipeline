@@ -3,13 +3,13 @@ namespace: company.team
 
 tasks:
   # ---------------------------------------------------------
-  # FASE 1: DESCARGA IDEMPOTENTE DESDE KAGGLE (Vía API Nativa)
+  # PHASE 1: IDEMPOTENT DOWNLOAD FROM KAGGLE
   # ---------------------------------------------------------
   - id: kaggle_download_idempotent
     type: io.kestra.plugin.scripts.python.Script
     runner: PROCESS
     env:
-      # TUS DATOS DE KAGGLE (Dejalos como los tenés)
+      # KAGGLE CREDENTIALS (Keep your current values)
       KAGGLE_USERNAME: "tu_usuario_de_kaggle"
       KAGGLE_KEY: "tu_llave_secreta_alfanumerica_de_kaggle"
     beforeCommands:
@@ -23,26 +23,26 @@ tasks:
       
       INDICATOR_FILE = os.path.join(DATA_DIR, "informations_households.csv")
 
-      print(f"🔍 Verificando acopio local en {DATA_DIR}...")
+      print(f"🔍 Checking local storage at {DATA_DIR}...")
 
       if os.path.exists(INDICATOR_FILE):
-          print(f"✅ Materiales detectados en obra local. Saltando descarga de Kaggle.")
+          print(f"✅ Data detected in local storage. Skipping Kaggle download.")
       else:
-          print(f"⏳ Faltan materiales. Iniciando descarga de {DATASET_ID} desde Kaggle...")
+          print(f"⏳ Data missing. Starting download from {DATASET_ID} via Kaggle...")
           try:
               # Usamos la API oficial de Python en lugar de comandos de terminal
               api = KaggleApi()
-              api.authenticate() # Lee tus variables de entorno automáticamente
+              api.authenticate() # Automatically reads environment variables
               
-              # Descarga y descomprime directo en la carpeta
+              # Download and unzip directly into the directory
               api.dataset_download_files(DATASET_ID, path=DATA_DIR, unzip=True)
-              print("✅ Descarga y desembalaje completados con éxito.")
+              print("✅ Download and extraction completed successfully.")
           except Exception as e:
-              print(f"❌ Error en la grúa de Kaggle: {e}")
+              print(f"❌ Kaggle API Error: {e}")
               exit(1)
 
   # ---------------------------------------------------------
-  # FASE 1.5: INSPECCIÓN DE CALIDAD (Tu Script)
+  # # PHASE 1.5: QUALITY INSPECTION (Custom Script)
   # ---------------------------------------------------------
   - id: run_quality_check
     type: io.kestra.plugin.scripts.python.Script
@@ -51,11 +51,11 @@ tasks:
       - pip install pandas --quiet
     script: |
       import subprocess
-      print("🕵️‍♂️ Ejecutando script de calidad externo...")
+      print("🕵️‍♂️ Running external quality script...")
       subprocess.run(["python", "/app/research/quality_check.py"], check=True)
 
   # ---------------------------------------------------------
-  # FASE 2: SUBIDA IDEMPOTENTE A GOOGLE CLOUD STORAGE
+  # PHASE 2: IDEMPOTENT UPLOAD TO GOOGLE CLOUD STORAGE
   # ---------------------------------------------------------
   - id: gcs_upload_idempotent
     type: io.kestra.plugin.scripts.python.Script
@@ -68,14 +68,14 @@ tasks:
       import os
       from google.cloud import storage
 
-      # REEMPLAZÁ CON EL NOMBRE DE TU BUCKET
+      # REPLACE WITH YOUR BUCKET NAME
       BUCKET_NAME = "london_energy_datalake_smart-meters-london"
       BASE_DIR = "/app/datasets"
 
       client = storage.Client()
       bucket = client.bucket(BUCKET_NAME)
 
-      print(f"🏗️ Iniciando carga hacia: gs://{BUCKET_NAME}")
+      print(f"🏗️ Starting upload to: gs://{BUCKET_NAME}")
       uploaded_count = 0
       skipped_count = 0
 
@@ -88,14 +88,14 @@ tasks:
                   blob = bucket.blob(blob_name)
                   
                   if not blob.exists():
-                      print(f"Subiendo: {blob_name}...")
+                      print(f"Uploading: {blob_name}...")
                       blob.upload_from_filename(local_path)
                       uploaded_count += 1
                   else:
                       skipped_count += 1
 
       print("="*40)
-      print(f"✅ Fase de Ingesta Finalizada.")
-      print(f"📦 Archivos nuevos subidos hoy: {uploaded_count}")
-      print(f"⏭️ Archivos omitidos (ya en la nube): {skipped_count}")
+      print(f"✅ Ingestion Phase Completed.")
+      print(f"📦 New files uploaded today: {uploaded_count}")
+      print(f"⏭️ Files skipped (already in cloud): {skipped_count}")
       print("="*40)

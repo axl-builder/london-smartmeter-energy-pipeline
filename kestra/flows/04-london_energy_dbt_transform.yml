@@ -10,16 +10,16 @@ tasks:
     beforeCommands:
       - pip install dbt-bigquery --quiet
     commands:
-      # 1. Clonar tu repositorio fresco desde la nube (REEMPLAZAR URL)
-      - echo "📥 Descargando planos desde GitHub..."
-      - rm -rf /tmp/repo  # <-- EL ESCUDO SENIOR 
+      # 1. Clone fresh repository from the cloud (REPLACE URL)
+      - echo "📥 Downloading blueprints from GitHub..."
+      - rm -rf /tmp/repo  # CLEANUP: Ensures a fresh start
       - git clone https://github.com/axl-builder/london-smartmeter-energy-pipeline.git /tmp/repo
       
-      # 2. Movernos a la carpeta de dbt
+      # 2. Move to the dbt project folder
       - cd /tmp/repo/london_energy_dbt
       
-      # 3. Fabricar el profiles.yml dinámico para este contenedor
-      - echo "⚙️ Configurando credenciales de Google Cloud..."
+      # 3. Generate a dynamic profiles.yml for this container
+      - echo "⚙️ Configuring Google Cloud credentials..."
       - mkdir -p ~/.dbt
       - |
         cat <<EOF > ~/.dbt/profiles.yml
@@ -29,14 +29,14 @@ tasks:
             dev:
               type: bigquery
               method: service-account
-              project: smart-meters-london # REEMPLAZAR CON TU ID
+              project: smart-meters-london # REPLACE WITH YOUR PROJECT ID
               dataset: stg_london_energy
               threads: 4
               keyfile: /app/gcp_key.json
               location: US
         EOF
       
-      # 4. Ejecutar la magia de dbt
-      - echo "🚀 Iniciando Transformación y Testing en BigQuery..."
-      # Usamos 'dbt build' que es un comando Senior: hace 'run' y 'test' al mismo tiempo
+      # 4. Execute dbt magic
+      - echo "🚀 Starting Transformation and Testing in BigQuery..."
+      # Using 'dbt build' (Senior level): executes 'run' and 'test' in a single step
       - dbt build

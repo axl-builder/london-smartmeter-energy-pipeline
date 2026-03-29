@@ -4,29 +4,29 @@ import sys
 import os
 
 def run_checks():
-    # LA RUTA CORRECTA ADENTRO DEL CONTENEDOR
+    # THE CORRECT PATH INSIDE THE CONTAINER
     BASE_DIR = "/app/datasets" 
     report = []
     
-    print("🕵️‍♂️ Iniciando Inspección de Calidad de Materiales...")
+    print("🕵️‍♂️ Starting Material Quality Inspection...")
 
-    # Recorremos todas las subcarpetas usando os.walk en vez de glob
+    # Iterate through all subfolders using os.walk instead of glob
     for root, dirs, files in os.walk(BASE_DIR):
         for file in files:
             if file.endswith(".csv"):
                 file_path = os.path.join(root, file)
                 filename = os.path.basename(file)
                 
-                # Solo analizamos los bloques de consumo, ignoramos clima y feriados
+                # Only analyze consumption blocks, ignore weather and holidays
                 if "block" in filename:
                     df = pd.read_csv(file_path, nrows=100000) 
                     
-                    # 1. VALIDACIÓN CRÍTICA
+                    # 1. CRITICAL VALIDATION
                     if 'LCLid' not in df.columns or df['LCLid'].isnull().any():
-                        print(f"❌ ERROR CRÍTICO: {filename} tiene IDs faltantes o nulos.")
-                        sys.exit(1) # Frena a Kestra
+                        print(f"❌ CRITICAL ERROR: {filename} has missing or null IDs.")
+                        sys.exit(1) # Stops Kestra
                         
-                    # 2. VALIDACIÓN DE INCONGRUENCIAS
+                    # 2. INCONSISTENCY VALIDATION
                     consumo_col = [col for col in df.columns if 'KWH/HH' in col.upper()]
                     
                     if consumo_col:
@@ -37,20 +37,20 @@ def run_checks():
                         negative_values = (df[col_name] < 0).sum()
                         
                         report.append({
-                            "archivo": filename,
-                            "filas_muestreadas": len(df),
-                            "nulos_consumo": int(null_count),
-                            "valores_negativos": int(negative_values)
+                            "file": filename,
+                            "sampled_rows": len(df),
+                            "null_consumption": int(null_count),
+                            "negative_values": int(negative_values)
                         })
     
-    # 3. GUARDAR EL REPORTE (AQUÍ ESTABA EL ERROR)
+    # 3. SAVE THE REPORT (THE ERROR WAS HERE)
     report_path = os.path.join(BASE_DIR, "quality_report.csv")
     
     if report:
         pd.DataFrame(report).to_csv(report_path, index=False)
-        print(f"✅ Inspección finalizada. Informe generado en {report_path}")
+        print(f"✅ Inspection completed. Report generated at {report_path}")
     else:
-        print("⚠️ No se encontraron archivos de consumo para analizar.")
+        print("⚠️ No consumption files found to analyze.")
 
 if __name__ == "__main__":
     run_checks()

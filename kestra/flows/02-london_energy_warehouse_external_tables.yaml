@@ -3,7 +3,7 @@ namespace: company.team
 
 tasks:
   # ---------------------------------------------------------
-  # 1. TABLA EXTERNA: CONSUMO DIARIO (Daily Dataset)
+  # 1. EXTERNAL TABLE: DAILY CONSUMPTION (Daily Dataset)
   # ---------------------------------------------------------
   - id: create_daily_external_table
     type: io.kestra.plugin.gcp.bigquery.Query
@@ -17,7 +17,7 @@ tasks:
       );
 
   # ---------------------------------------------------------
-  # 2. TABLA EXTERNA: CONSUMO MEDIA HORA (Half-Hourly Dataset)
+  # 2. EXTERNAL TABLE: HALF-HOURLY CONSUMPTION (Half-Hourly Dataset)
   # ---------------------------------------------------------
   - id: create_hh_external_table
     type: io.kestra.plugin.gcp.bigquery.Query

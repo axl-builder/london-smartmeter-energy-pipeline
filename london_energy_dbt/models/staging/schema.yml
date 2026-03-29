@@ -2,29 +2,29 @@ version: 2
 
 models:
   - name: stg_daily_consumption
-    description: "Capa Staging: Datos limpios de consumo diario de energía por hogar en Londres."
+    description: "Staging Layer: Cleaned daily energy consumption data per London household."
     columns:
       - name: household_id
-        description: "ID único del medidor de la casa."
+        description: "Unique household meter ID."
         tests:
           - not_null
 
       - name: consumption_date
-        description: "Fecha en la que se registró el consumo."
+        description: "Date when the consumption was recorded."
         tests:
           - not_null
 
       - name: energy_sum
-        description: "Suma total de energía consumida en el día (kWh)."
+        description: "Total energy consumption for the day (kWh)."
         tests:
           - not_null
-          
+
   - name: stg_weather_daily
-    description: "Capa Staging: Clima diario de Londres (DarkSky)."
+    description: "Staging Layer: Daily London weather data (DarkSky)."
     columns:
       - name: weather_date
         tests:
           - not_null
-      - name: max_temp_celsius # Ponemos el control de calidad en la temperatura
+      - name: max_temp_celsius # Quality control check for temperature values
         tests:
           - not_null

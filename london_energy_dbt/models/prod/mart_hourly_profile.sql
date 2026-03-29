@@ -4,12 +4,12 @@ with half_hourly_wide as (
     select * from {{ source('raw_london_energy', 'hh_consumption_ext') }}
 ),
 
--- 1. APLASTAMOS LAS 48 COLUMNAS EN FILAS
+-- 1. UNPIVOTING 48 COLUMNS INTO ROWS
 unpivoted_data as (
     select
         LCLid as household_id,
         day as consumption_date,
-        -- Extraemos el número de la columna y lo dividimos por 2 para sacar la hora (0 a 23)
+        -- Extract the column number and divide by 2 to get the hour of the day (0 to 23)
         DIV(CAST(REPLACE(hh_period, 'hh_', '') AS INT64), 2) as hour_of_day,
         energy_kwh
     from half_hourly_wide
@@ -22,7 +22,7 @@ unpivoted_data as (
     ))
 ),
 
--- 2. SUMAMOS LAS DOS MEDIAS HORAS PARA TENER EL TOTAL DE LA HORA ENTERA
+-- 2. AGGREGATING HALF-HOURLY DATA INTO FULL-HOUR TOTALS
 hourly_sums as (
     select
         household_id,
@@ -33,11 +33,11 @@ hourly_sums as (
     group by 1, 2, 3
 ),
 
--- 3. TRAEMOS LA INFORMACIÓN DEL HOGAR (ACORN)
+-- 3. FETCHING HOUSEHOLD INFORMATION (ACORN)
 households as (
     select 
         lc_lid as household_id, 
-        -- Limpiamos la basura de Kaggle:
+        -- Cleaning up Kaggle's messy data:
         CASE 
             WHEN acorn_grouped IN ('ACORN-U', 'ACORN-') THEN 'Unknown'
             WHEN acorn_grouped IS NULL THEN 'Unknown'
@@ -46,7 +46,7 @@ households as (
     from {{ source('raw_london_energy', 'informations_households') }}
 ),
 
--- 4. CRUZAMOS Y PROMEDIAMOS TODO PARA EL GRAFICO FINAL
+-- 4. JOINING AND AVERAGING DATA FOR FINAL VISUALIZATION
 hourly_aggregated as (
     select
         hs.hour_of_day,

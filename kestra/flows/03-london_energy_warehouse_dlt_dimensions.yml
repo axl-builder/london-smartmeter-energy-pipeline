@@ -10,15 +10,15 @@ tasks:
     beforeCommands:
       - pip install dbt-bigquery --quiet
     commands:
-      # 1. Clonar tu repositorio fresco desde la nube (REEMPLAZAR URL)
-      - echo "📥 Descargando planos desde GitHub..."
+      # 1. Clone fresh repository from the cloud (REPLACE URL)
+      - echo "📥 Downloading blueprints from GitHub..."
       - git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git /tmp/repo
       
-      # 2. Movernos a la carpeta de dbt
+      # 2. Move to dbt directory
       - cd /tmp/repo/london_energy_dbt
       
-      # 3. Fabricar el profiles.yml dinámico para este contenedor
-      - echo "⚙️ Configurando credenciales de Google Cloud..."
+      # 3. Generate dynamic profiles.yml for this container
+      - echo "⚙️ Configuring Google Cloud credentials..."
       - mkdir -p ~/.dbt
       - |
         cat <<EOF > ~/.dbt/profiles.yml
@@ -28,14 +28,14 @@ tasks:
             dev:
               type: bigquery
               method: service-account
-              project: TU_PROJECT_ID # REEMPLAZAR CON TU ID
+              project: TU_PROJECT_ID # REPLACE WITH YOUR ID
               dataset: stg_london_energy
               threads: 4
               keyfile: /app/gcp_key.json
               location: US
         EOF
       
-      # 4. Ejecutar la magia de dbt
-      - echo "🚀 Iniciando Transformación y Testing en BigQuery..."
-      # Usamos 'dbt build' que es un comando Senior: hace 'run' y 'test' al mismo tiempo
+      # 4. Execute dbt magic
+      - echo "🚀 Starting Transformation and Testing in BigQuery..."
+      # Using 'dbt build' (Senior level): performs 'run' and 'test' simultaneously
       - dbt build

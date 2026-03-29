@@ -1,9 +1,9 @@
 # ==============================================================================
-# PROYECTO: Pipeline de Energía (Smart Meters London)
+# PROJECT: Energy Pipeline (Smart Meters London)
 # ==============================================================================
 
-# --- SEGURIDAD Y CREDENCIALES (¡LO MÁS IMPORTANTE!) ---
-# No queremos que tus llaves de Kaggle o GCP terminen en manos ajenas
+# --- SECURITY AND CREDENTIALS (MOST IMPORTANT!) ---
+# We don't want your Kaggle or GCP keys ending up in the wrong hands
 .kaggle/
 kaggle.json
 *.json
@@ -14,20 +14,20 @@ secrets/
 *.pem
 *.key
 
-# --- DATOS Y ALMACENAMIENTO (ACAPARADORES DE ESPACIO) ---
-# No subimos los 1.17GB de CSVs. El reclutador los bajará con tu script.
+# --- DATA AND STORAGE (LARGE FILES) ---
+# We do not upload the 1.17GB of CSVs. The recruiter will download them using your script.
 data/
 *.csv
 *.zip
 *.gz
 *.parquet
 
-# Si usas SQLite local para pruebas:
+# If using local SQLite for testing:
 *.sqlite
 *.db
 
-# --- INFRAESTRUCTURA (TERRAFORM) ---
-# No queremos subir el "estado" de tu infraestructura local
+# --- INFRASTRUCTURE (TERRAFORM) ---
+# We don't want to upload the "state" of your local infrastructure
 .terraform/
 *.tfstate
 *.tfstate.backup
@@ -37,8 +37,8 @@ data/
 override.tf
 override.tf.json
 
-# --- ENTORNO VIRTUAL Y DEPENDENCIAS (PYTHON) ---
-# Usamos 'uv' o 'pip', pero el entorno (.venv) se crea en cada máquina
+# --- VIRTUAL ENVIRONMENT AND DEPENDENCIES (PYTHON) ---
+# We use 'uv' or 'pip', but the environment (.venv) is created on each machine
 .venv/
 env/
 venv/
@@ -49,18 +49,18 @@ dist/
 __pycache__/
 *.py[cod]
 
-# --- ORQUESTACIÓN Y HERRAMIENTAS (KESTRA / DLT) ---
+# --- ORCHESTRATION AND TOOLS (KESTRA / DLT) ---
 .kestra/
 .dlt/
 pip-log.txt
 pip-delete-this-directory.txt
 
-# --- NOTEBOOKS Y ANÁLISIS ---
-# Ignoramos los puntos de control de Jupyter
+# --- NOTEBOOKS AND ANALYSIS ---
+# Ignore Jupyter checkpoints
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
-# --- SISTEMA OPERATIVO Y LOGS ---
+# --- OPERATING SYSTEM AND LOGS ---
 .DS_Store
 Thumbs.db
 *.log

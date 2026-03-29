@@ -2,10 +2,10 @@ version: 2
 
 models:
   # --------------------------------------------------
-  # 1. TESTEANDO EL DATA MART DIARIO ORIGINAL
+  # 1. TESTING THE ORIGINAL DAILY DATA MART
   # --------------------------------------------------
   - name: mart_daily_energy_weather
-    description: "Tabla de Producción: Consumo diario cruzado con clima y feriados."
+    description: "Production Table: Daily consumption joined with weather and holidays."
     columns:
       - name: consumption_date
         tests:
@@ -15,10 +15,10 @@ models:
           - not_null
 
   # --------------------------------------------------
-  # 2. TESTEANDO EL DATA MART DE ACORN
+  # 2. TESTING THE ACORN DATA MART
   # --------------------------------------------------
   - name: mart_acorn_daily
-    description: "Tabla de Producción: Consumo diario segmentado por perfil socioeconómico (ACORN)."
+    description: "Production Table: Daily consumption segmented by socioeconomic profile (ACORN)."
     columns:
       - name: consumption_date
         tests:
@@ -31,17 +31,17 @@ models:
           - not_null
 
   # --------------------------------------------------
-  # 3. TESTEANDO EL PERFIL HORARIO
+  # 3. TESTING THE HOURLY PROFILE
   # --------------------------------------------------
   - name: mart_hourly_profile
-    description: "Tabla de Producción: Curva de consumo promedio por hora del día y grupo ACORN."
+    description: "Production Table: Average consumption curve by hour of the day and ACORN group."
     columns:
       - name: hour_of_day
         tests:
           - not_null
           - accepted_values:
               arguments:
-                quote: false  # <-- EL ARREGLO REAL: Evita que dbt lo transforme en texto
+                quote: false  # <-- THE ACTUAL FIX: Prevents dbt from casting values as strings
                 values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
       - name: acorn_group
         tests:

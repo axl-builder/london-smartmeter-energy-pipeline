@@ -8,7 +8,7 @@ casted as (
     select
         cast(cast(time as timestamp) as date) as weather_date,
         
-        -- ACÁ ESTÁ EL ARREGLO: usamos los nombres normalizados por dlt
+        -- THE FIX: Using normalized column names from dlt
         cast(temperature_max as numeric) as max_temp_celsius,
         cast(temperature_min as numeric) as min_temp_celsius,
         cast(precip_type as numeric) as precip_type,
@@ -17,7 +17,7 @@ casted as (
 
     from raw_weather
     where time is not null
-        and temperature_max is not null -- Filtramos los días sin registro de temperatura
+        and temperature_max is not null -- Filtering out days without temperature records
 )
 
 select * from casted

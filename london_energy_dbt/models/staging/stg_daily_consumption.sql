@@ -2,21 +2,21 @@
     materialized='view' 
 ) }}
 
--- 1. Importamos la fuente usando la macro de dbt
+-- 1. Import the source using the dbt macro
 with raw_daily as (
     select * from {{ source('raw_london_energy', 'daily_consumption_ext') }}
 ),
 
--- 2. Limpiamos y estandarizamos la tabla
+-- 2. Clean and standardize the table
 renamed_and_casted as (
     select
-        -- Identificador de la casa (lo pasamos a minúsculas para prolijidad)
+        -- Household identifier (converted to lowercase for consistency)
         LCLid as household_id,
         
-        -- Convertimos el texto de la fecha a un formato DATE real de BigQuery
+        -- Cast date string to a proper BigQuery DATE format
         cast(day as date) as consumption_date,
         
-        -- Casteamos las métricas de energía a números decimales (NUMERIC)
+        -- Cast energy metrics to decimal numbers (NUMERIC)
         cast(energy_median as numeric) as energy_median,
         cast(energy_mean as numeric) as energy_mean,
         cast(energy_max as numeric) as energy_max,
@@ -26,10 +26,10 @@ renamed_and_casted as (
         cast(energy_min as numeric) as energy_min
 
     from raw_daily
-    -- Filtramos posibles filas vacías o corruptas que hayan venido del CSV
+    -- Filter out empty or corrupted rows from the CSV source
     where LCLid is not null
     and energy_sum is not null
 )
 
--- 3. Resultado final
+-- 3. Final output
 select * from renamed_and_casted

@@ -1,19 +1,19 @@
 variable "project" {
-  description = "Tu ID de Proyecto de GCP"
+  description = "Your GCP Project ID"
   default     = "smart-meters-london"
 }
 
 variable "region" {
-  description = "Región de los recursos"
+  description = "Resource region"
   default     = "us-central1"
 }
 
 variable "location" {
-  description = "Ubicación del bucket/dataset"
+  description = "Bucket/dataset location"
   default     = "US"
 }
 
 variable "gcs_bucket_name" {
-  description = "Nombre base para el bucket"
+  description = "Base name for the bucket"
   default     = "london_energy_datalake"
 }

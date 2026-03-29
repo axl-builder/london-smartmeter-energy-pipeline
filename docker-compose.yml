@@ -1,12 +1,12 @@
 version: "3.8"
 
 services:
-  # El Pañol de Datos: Donde Kestra anota qué hizo y qué le falta hacer
+  # Data Store: Where Kestra tracks executed and pending tasks
   postgres:
     image: postgres:15
     container_name: kestra_db
     volumes:
-      - ./kestra/postgres_data:/var/lib/postgresql/data # Para tus flows
+      - ./kestra/postgres_data:/var/lib/postgresql/data # For your flow
     environment:
       POSTGRES_USER: kestra
       POSTGRES_PASSWORD: kestra_password
@@ -14,10 +14,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0' # Le damos 1 hilo entero para que no se trabe al guardar logs
+          cpus: '1.0' # Allocating 1 full CPU thread to prevent bottlenecks when saving logs
           memory: 1G
 
-  # El Cerebro: El orquestador que va a mandar a dlt y dbt
+  # The Brain: The orchestrator managing dlt and dbt
   kestra:
     image: kestra/kestra:latest-full
     container_name: kestra_server
@@ -28,7 +28,7 @@ services:
       - "8080:8080"
     volumes:
       - ./kestra/flows:/app/flows
-      - ./data:/app/datasets                 # CAMBIO CLAVE: Apuntamos a /datasets, no a /data
+      - ./data:/app/datasets                 # KEY CHANGE: Pointing to /datasets, not /data
       - ./gcp_key.json:/app/gcp_key.json
       - ./research:/app/research
       - /var/run/docker.sock:/var/run/docker.sock

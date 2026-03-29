@@ -1,6 +1,6 @@
 terraform {
   required_version = ">= 1.0"
-  backend "local" {} # Podés cambiarlo a "gcs" más adelante si querés guardar el estado en la nube
+  backend "local" {} # You can change this to "gcs" later if you want to store the state in the cloud
   required_providers {
     google = {
       source = "hashicorp/google"
@@ -15,13 +15,13 @@ provider "google" {
 
 # 1. DATA LAKE: Google Cloud Storage Bucket
 resource "google_storage_bucket" "data_lake_bucket" {
-  name          = "${var.gcs_bucket_name}_${var.project}" # Nombre único
+  name          = "${var.gcs_bucket_name}_${var.project}" # Unique name
   location      = var.location
   force_destroy = true
 
   lifecycle_rule {
     condition {
-      age = 30 # Autolimpieza a los 30 días para no acumular costos
+      age = 30 # Auto-cleanup after 30 days to avoid accumulating costs
     }
     action {
       type = "Delete"
@@ -31,9 +31,9 @@ resource "google_storage_bucket" "data_lake_bucket" {
   storage_class = "STANDARD"
 }
 
-# 2. DATA WAREHOUSE: BigQuery Datasets (Capas de Datos)
+# 2. DATA WAREHOUSE: BigQuery Datasets (Data Layers)
 
-# Capa RAW: Datos crudos (Tablas externas o ingesta directa)
+# RAW Layer: Raw data (External tables or direct ingestion)
 resource "google_bigquery_dataset" "raw_dataset" {
   dataset_id                 = "raw_london_energy"
   project                    = var.project
@@ -41,7 +41,7 @@ resource "google_bigquery_dataset" "raw_dataset" {
   delete_contents_on_destroy = true
 }
 
-# Capa STAGING: Datos limpios/transformados con dbt o SQL
+# STAGING Layer: Clean/transformed data with dbt or SQL
 resource "google_bigquery_dataset" "stg_dataset" {
   dataset_id                 = "stg_london_energy"
   project                    = var.project
@@ -49,7 +49,7 @@ resource "google_bigquery_dataset" "stg_dataset" {
   delete_contents_on_destroy = true
 }
 
-# Capa PRODUCTION: Datos finales para Dashboard o Análisis
+# PRODUCTION Layer: Final data for Dashboard or Analysis
 resource "google_bigquery_dataset" "prod_dataset" {
   dataset_id                 = "prod_london_energy"
   project                    = var.project

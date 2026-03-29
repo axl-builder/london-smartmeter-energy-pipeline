@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # 🏗️ JOB 1: REVISAR TERRAFORM
+  # 🏗️ JOB 1: CHECK TERRAFORM
   terraform-check:
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +34,7 @@ jobs:
           cd terraform
           terraform fmt -check
 
-  # 📊 TRABAJO 2: REVISAR DBT
+  # 📊 JOB 2: CHECK DBT
   dbt-check:
     runs-on: ubuntu-latest
     steps:

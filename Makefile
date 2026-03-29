@@ -7,7 +7,7 @@ up:
 down:
 	docker-compose down
 
-# --- TERRAFORM (INFRAESTRUCTURA GCP) ---
+# --- TERRAFORM (GCP INFRASTRUCTURE) ---
 tf-init:
 	cd terraform && terraform init
 
@@ -20,7 +20,7 @@ tf-apply:
 tf-destroy:
 	cd terraform && terraform destroy
 
-# --- DBT (TRANSFORMACIÓN) ---
+# --- DBT (TRANSFORMATION) ---
 dbt-run:
 	cd london_energy_dbt && dbt run
 
